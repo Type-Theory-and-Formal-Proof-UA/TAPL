@@ -28,7 +28,7 @@
 
 #bib[Abelson, Harold and Gerald Sussman. Structure and Interpretation of Computer Programs. MIT Press, New York, 1985. Second edition, 1996.]
 
-#bib[Abramsky, Samson, Radha Jagadeesan, and Pasquale Malacaria. Full abstraction for pcf. Information and Computation, 163(2):409–470, December 2000.]
+#bib[Abramsky, Samson, Radha Jagadeesan, and Pasquale Malacaria. Full abstraction for PCF. Information and Computation, 163(2):409–470, December 2000.]
 
 #bib[Aczel, Peter. An introduction to inductive definitions. In Jon Barwise, editor, Handbook of Mathematical Logic, number 90 in Studies in Logic and the Foundations of]
 
@@ -178,9 +178,9 @@
 
 #bib[Burstall, Rod M. Proving properties of programs by structural induction. The Computer Journal, 12(1):41–48, 1969.]
 
-#bib[Canning, Peter, William Cook, Walt Hill, and Walter Olthoff. Interfaces for stronglytyped object-oriented programming. In ACM Symposium on Object Oriented Programming: Systems, Languages, and Applications (OOPSLA), pages 457–467, 1989a.]
+#bib[Canning, Peter, William Cook, Walter Hill, and Walter Olthoff. Interfaces for stronglytyped object-oriented programming. In ACM Symposium on Object Oriented Programming: Systems, Languages, and Applications (OOPSLA), pages 457–467, 1989a.]
 
-#bib[Canning, Peter, William Cook, Walter Hill, Walter Olthoff, and John Mitchell. F-bounded quantification for object-oriented programming. In ACM Symposium on Functional Programming Languages and Computer Architecture (FPCA), pages 273–280, September 1989b.]
+#bib[Canning, Peter, William Cook, Walter Hill, Walter Olthoff, and John Mitchell. F-bounded polymorphism for object-oriented programming. In ACM Symposium on Functional Programming Languages and Computer Architecture (FPCA), pages 273–280, September 1989b.]
 
 #bib[Canning, Peter, Walt Hill, and Walter Olthoff. A kernel language for object-oriented programming. Technical Report STL-88-21, Hewlett-Packard Labs, 1988.]
 
@@ -416,11 +416,11 @@
 
 #bib[Gapeyev, Vladimir, Michael Levin, and Benjamin Pierce. Recursive subtyping revealed. In International Conference on Functional Programming (ICFP), Montreal, Canada, 2000. To appear in Journal of Functional Programming.]
 
-#bib[Garrigue, Jaques and Hassan Aït-Kaci. The typed polymorphic label-selective lambdacalculus. In ACM Symposium on Principles of Programming Languages (POPL),]
+#bib[Garrigue, Jacques and Hassan Aït-Kaci. The typed polymorphic label-selective lambdacalculus. In ACM Symposium on Principles of Programming Languages (POPL),]
 
 #bib[Portland, Oregon, pages 35–47, 1994.]
 
-#bib[Garrigue, Jaques and Didier Rémy. Extending ML with semi-explicit polymorphism. In Martín Abadi and Takayasu Ito, editors, International Symposium on Theoretical Aspects of Computer Software (TACS), Sendai, Japan, pages 20–46. Springer-Verlag, September 1997.]
+#bib[Garrigue, Jacques and Didier Rémy. Extending ML with semi-explicit polymorphism. In Martín Abadi and Takayasu Ito, editors, International Symposium on Theoretical Aspects of Computer Software (TACS), Sendai, Japan, pages 20–46. Springer-Verlag, September 1997.]
 
 #bib[Ghelli, Giorgio. Proof Theoretic Studies about a Minimal Type System Integrating Inclusion and Parametric Polymorphism. PhD thesis, Università di Pisa, March 1990. Technical report TD–6/90, Dipartimento di Informatica, Università di Pisa.]
 

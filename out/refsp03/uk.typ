@@ -40,7 +40,7 @@
 
 #bib[Pitts, Andrew M. Parametric polymorphism and operational equivalence. Mathematical Structures in Computer Science, 10:321–359, 2000.]
 
-#bib[Plasmeijer, Marinus J. CLEAN: a programming environment based on term graph rewriting. Theoretical Computer Science, 194(1–2), March 1998.]
+#bib[Plasmeijer, Marinus J. CLEAN: A programming environment based on term graph rewriting. Theoretical Computer Science, 194(1–2), March 1998.]
 
 #bib[Plotkin, Gordon. Call-by-name, call-by-value, and the λ-calculus. Theoretical Computer Science, 1:125–159, 1975.]
 
@@ -96,7 +96,7 @@
 
 #bib[Rémy, Didier. Des enregistrements aux objets. Mémoire d’habilitation à diriger des recherches, Université de Paris 7, 1998. In English, except for introductory chapter; includes (Rémy, 1989) and (Rémy, 1992b).]
 
-#bib[Rémy, Didier and Jérôme Vouillon. Objective ML: An effective object-oriented extension to ML. Theory And Practice of Object Systems, 4(1):27–50, 1998. Summary in ACM Symposium on Principles of Programming Languages (POPL), Paris, France, 1997.]
+#bib[Rémy, Didier and Jérôme Vouillon. Objective ML: An effective object-oriented extension to ML. Theory and Practice of Object Systems, 4(1):27–50, 1998. Summary in ACM Symposium on Principles of Programming Languages (POPL), Paris, France, 1997.]
 
 #bib[Reynolds, John. Three approaches to type structure. In Mathematical Foundations of Software Development. Springer-Verlag, 1985. Lecture Notes in Computer Science No. 185.]
 
@@ -194,7 +194,7 @@
 
 #bib[Reading, MA, third edition, 1997.]
 
-#bib[Studer, Thomas. Constructive foundations for featherweight java. In R. Kahle, P. Schroeder-Heister, and R. Stärk, editors, Proof Theory in Computer Science.]
+#bib[Studer, Thomas. Constructive foundations for Featherweight Java. In R. Kahle, P. Schroeder-Heister, and R. Stärk, editors, Proof Theory in Computer Science.]
 
 #bib[Springer-Verlag, 2001. Lecture Notes in Computer Science, volume 2183.]
 
@@ -210,7 +210,7 @@
 
 #bib[Talpin, Jean-Pierre and Pierre Jouvelot. The type and effects discipline. In Proc. IEEE Symp. on Logic in Computer Science, pages 162–173, 1992.]
 
-#bib[Tarditi, David, Greg Morrisett, Perry Cheng, Christopher Stone, Robert Harper, and Peter Lee. TIL : A type-directed optimizing compiler for ML. In ACM SIGPLAN Con-ference on Programming Language Design and Implementation (PLDI), Philadephia,]
+#bib[Tarditi, David, Greg Morrisett, Perry Cheng, Christopher Stone, Robert Harper, and Peter Lee. TIL: A type-directed optimizing compiler for ML. In ACM SIGPLAN Con-ference on Programming Language Design and Implementation (PLDI), Philadephia,]
 
 #bib[Pennsylvania, pages 181–192, May 21–24 1996.]
 
@@ -312,7 +312,7 @@
 
 #bib[Yelick, Kathy, Luigi Semenzato, GeoffPike, Carleton Miyamoto, Ben Liblit, Arvind]
 
-#bib[Krishnamurthy, Paul Hilfinger, Susan Graham, David Gay, Phil Colella, and Alex Aiken. Titanium: a high-performance Java dialect. Concurrency: Practice and]
+#bib[Krishnamurthy, Paul Hilfinger, Susan Graham, David Gay, Phil Colella, and Alex Aiken. Titanium: A high-performance Java dialect. Concurrency: Practice and]
 
 #bib[Experience, 10(11–13):825–836, September 1998. Special Issue: Java for Highperformance Network Computing.]
 

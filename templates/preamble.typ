@@ -161,12 +161,21 @@
   #v(-0.15em)
   #align(center)[#conclusion]
 ])
-#let figure(caption, body) = _hf(block(width: 100%, breakable: false)[
+// Фігури й таблиці: тіло (#rules / #code / #grid — вони малюють власну рамку)
+// плюс підпис під ним.
+//
+// УВАГА: тіло НЕ можна загортати в `block(breakable: false)`. Довга фігура, яка
+// не вміщається в залишок сторінки, у такому блоці не переноситься, а малюється
+// ЗА межами сторінки — хвіст зникає і з очей, і з тексту PDF (саме так TAPL
+// «Рисунок 26-1» втратив останні 14 рядків, включно з усім блоком «Обчислення»).
+// Звичайний потік контенту переносить довгу фігуру на наступну сторінку, як в книзі;
+// scripts/46_fidelity.py перевіряє, що кожен #raw-рядок справді є в рендері.
+#let figure(caption, body) = _hf(block(width: 100%)[
   #body
   #v(0.25em)
-  #align(center)[#text(size: 9.5pt)[#caption]] 
+  #align(center)[#text(size: 9.5pt)[#caption]]
 ])
-#let tbl(caption, body) = _hf(block(width: 100%, breakable: false)[
+#let tbl(caption, body) = _hf(block(width: 100%)[
   #body
   #v(0.25em)
   #align(center)[#text(size: 9.5pt)[#caption]]

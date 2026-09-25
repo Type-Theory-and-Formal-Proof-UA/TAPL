@@ -32,7 +32,7 @@
 
 #bib[Henglein, Fritz and Harry G. Mairson. The complexity of type inference for higherorder typed lambda-calculi. In ACM Symposium on Principles of Programming Languages (POPL), Orlando, Florida, pages 119–130, January 1991.]
 
-#bib[Hennessy, Matthew. A Semantics of Programming Languages: An Elementary Introduction Using Operational Semantics. John Wiley and Sons, 1990. Currently out of print; available from http:\u{2F}\u{2F}www.cogs.susx.ac.uk/ users/matthewh/semnotes.ps.gz.]
+#bib[Hennessy, Matthew. The Semantics of Programming Languages: An Elementary Introduction Using Operational Semantics. John Wiley and Sons, 1990. Currently out of print; available from http:\u{2F}\u{2F}www.cogs.susx.ac.uk/ users/matthewh/semnotes.ps.gz.]
 
 #bib[Hennessy, Matthew and James Riely. Resource access control in systems of mobile agents. In Uwe Nestmann and Benjamin C. Pierce, editors, HLCL ’98: High-Level Concurrent Languages (Nice, France, September 12, 1998), volume 16.3 of ENTCS, pages 3–17. Elsevier Science Publishers, 1998. Full version available as CogSci Report 2/98, University of Sussex, Brighton.]
 
@@ -92,7 +92,7 @@
 
 #bib[Science, 1:27–57, 1975.]
 
-#bib[Huet, Gérard. Résolution d’equations dans les langages d’ordre 1,2, ...,ω. Thèse de Doctorat d’Etat, Université de Paris 7 (France), 1976.]
+#bib[Huet, Gérard. Résolution d’equations dans les langages d’ordre 1,2,...,ω. Thèse de Doctorat d’Etat, Université de Paris 7 (France), 1976.]
 
 #bib[Huet, Gérard, editor. Logical Foundations of Functional Programming. University of Texas at Austin Year of Programming Series. Addison-Wesley, 1990.]
 
@@ -290,7 +290,7 @@
 
 #bib[McCarthy, John, S. R. Russell, D. Edwards, et al. LISP Programmer’s Manual. Massachusetts Institute of Technology, A.I. Lab., Cambridge, Massachusetts, November 1959. Handwritten Draft + Machine Typed.]
 
-#bib[McKinna, James and Robert Pollack. Pure Type Sytems formalized. In M. Bezem and J. F. Groote, editors, Proceedings of the International Conference on Typed Lambda Calculi and Applications, pages 289–305. Springer-Verlag LNCS 664, March 1993.]
+#bib[McKinna, James and Robert Pollack. Pure Type Systems formalized. In M. Bezem and J. F. Groote, editors, Proceedings of the International Conference on Typed Lambda Calculi and Applications, pages 289–305. Springer-Verlag LNCS 664, March 1993.]
 
 #bib[Meertens, Lambert. Incremental polymorphic type checking in B. In ACM Symposium on Principles of Programming Languages (POPL), Austin, Texas, 1983.]
 

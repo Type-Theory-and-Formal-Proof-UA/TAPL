@@ -167,7 +167,7 @@ Standard ML (Milner, Tofte, Harper, and MacQueen, 1997), Haskell (Hudak et al.,
 умови правил
 
 #rules[
-  #rule([$t_1$ — числове значення], "E-PredSucc", [$"pred" ("succ" t_1) -> t_1$])
+  #rule([$t_1$ — числове значення], "E-PredSucc", [$"pred" ("succ" t_1) arrow.r.long t_1$])
 ]
 
 ціною деякої компактності й читабельності.)
@@ -203,7 +203,7 @@ Standard ML (Milner, Tofte, Harper, and MacQueen, 1997), Haskell (Hudak et al.,
 в дерева абстрактного синтаксису розбірником, перш ніж їх зможуть обчислити функції,
 які ми бачили. До того ж після обчислення результати треба надрукувати.
 
-#figure([Рисунок 4-1: Структура інтерпретатора], rules([
+#figure([], rules([
   #raw("chars → tokens → terms → values")
   #raw("file I/O   lexing   parsing   evaluation   printing")
 ]))
