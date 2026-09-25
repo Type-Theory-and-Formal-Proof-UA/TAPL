@@ -1,0 +1,12 @@
+# generated
+/book/
+/site/
+/build/
+
+# working material, not part of the published translation
+/raw/
+/src/
+/.probe/
+/out/*/source.txt
+/verify.json
+*.pdf
