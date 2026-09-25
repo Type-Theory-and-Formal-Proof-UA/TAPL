@@ -1,4 +1,5 @@
-"""Build the site published by GitHub Pages: site/tapl-uk.pdf and site/index.html.
+"""Build the site published by GitHub Pages: the HTML edition (one page per
+chapter, index.html = contents) and site/tapl-uk.pdf.
 
 Includes every unit whose parts are all translated, in book order. Units that
 are only partly translated are left out until their last part lands.
@@ -9,34 +10,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 MAN = json.loads((ROOT / "manifest.json").read_text())
 BOOK = ROOT / "book"
 SITE = ROOT / "site"
+BUILD = ROOT / "build"
 
 ORDER = ["front"] + [f"ch{i:02d}" for i in range(1, 33)] + \
         ["appA", "appB", "refs", "index"]
-
-INDEX = """<!doctype html>
-<html lang="uk">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Типи та мови програмування — український переклад</title>
-<style>
-  body {{ font: 18px/1.6 system-ui, sans-serif; max-width: 40rem; margin: 3rem auto; padding: 0 1rem; }}
-  a.btn {{ display: inline-block; padding: .6rem 1.2rem; background: #1a5fb4; color: #fff;
-          border-radius: .4rem; text-decoration: none; }}
-  small {{ color: #666; }}
-</style>
-</head>
-<body>
-<h1>Типи та мови програмування</h1>
-<p>Український переклад книги Бенджаміна Пірса <em>Types and Programming Languages</em>.
-Переклад триває; у збірці лише повністю перекладені розділи.</p>
-<p>Перекладено розділів: {done}. Очікують: {todo}.</p>
-<p><a class="btn" href="tapl-uk.pdf">Завантажити PDF</a></p>
-<p><small>Зібрано {stamp}.</small></p>
-</body>
-</html>
-"""
-
 
 def main():
     BOOK.mkdir(exist_ok=True)
@@ -62,21 +39,30 @@ def main():
     # text and paragraph setup from the preamble is applied here, at the top level.
     pre = (ROOT / "templates" / "preamble.typ").read_text(encoding="utf-8")
     setup = pre[pre.index("#set page("):pre.index("// --- змінні стану")]
-    head = '#let currentchapter = state("chapter", "")\n' + setup + "\n"
+    head = ('#set document(title: "Типи та мови програмування", '
+            'author: "Бенджамін К. Пірс")\n'
+            '#let currentchapter = state("chapter", "")\n' + setup + "\n"
+            # the contents page of the HTML edition (the PDF has no outlined headings)
+            '#context if target() == "html" { outline(title: none, depth: 1) }\n')
     (BOOK / "tapl-uk.typ").write_text(
         head + "".join(f'#include "/book/{uid}.typ"\n' for uid in done), encoding="utf-8")
 
-    r = subprocess.run(["typst", "compile", "--root", ".", "--font-path", "fonts",
-                        "--ignore-system-fonts", "book/tapl-uk.typ",
-                        "site/tapl-uk.pdf"], cwd=ROOT, capture_output=True, text=True)
-    if r.returncode != 0:
-        print(r.stderr.strip()[:2000])
-        return 1
-
-    import datetime
-    stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    (SITE / "index.html").write_text(
-        INDEX.format(done=len(done), todo=len(todo), stamp=stamp), encoding="utf-8")
+    common = ["--root", ".", "--font-path", "fonts", "--ignore-system-fonts"]
+    steps = [
+        ["typst", "compile", *common, "book/tapl-uk.typ", "site/tapl-uk.pdf"],
+        # HTML export is still experimental in Typst, hence the feature flag.
+        ["typst", "compile", "--features", "html", "--format", "html", *common,
+         "book/tapl-uk.typ", "build/book.html"],
+        # Typst emits one long page; cut it into one page per chapter.
+        [sys.executable, "scripts/split_html.py", "build/book.html", "site"],
+    ]
+    BUILD.mkdir(exist_ok=True)
+    for cmd in steps:
+        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
+        if r.returncode != 0:
+            print(r.stderr.strip()[:2000])
+            return 1
+    (SITE / ".nojekyll").touch()
     print(f"units in book: {len(done)}; still pending: {len(todo)}")
     return 0
 

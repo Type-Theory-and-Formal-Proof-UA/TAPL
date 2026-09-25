@@ -28,9 +28,23 @@
 // --- змінні стану -----------------------------------------------------------
 #let currentchapter = state("chapter", "")
 
+// --- HTML-експорт -------------------------------------------------------------
+// HTML-експорт Typst не має рушія верстки: grid, align, place, v, h у ньому
+// губляться. Тож усе, що верстається блоками (правила виведення, дошки, рисунки,
+// таблиці, формули з номерами), віддається як html.frame — вбудований SVG із
+// звичайної верстки. У межах frame `target()` — "paged", тому рекурсії немає.
+#let _hf(x) = context if target() == "html" {
+  html.elem("div", attrs: (style: "margin: 1.1em 0; overflow-x: auto"),
+    html.frame(block(width: 39em, x)))
+} else { x }
+
 // --- структурні заголовки ---------------------------------------------------
 // Глава: #chap("3", "Негіповані арифметичні вирази")
-#let chap(num, title) = {
+// У HTML глава — заголовок першого рівня (з нього розрізається сторінка).
+#let chap(num, title) = context if target() == "html" {
+  currentchapter.update(if num == "" { title } else { num + " " + title })
+  heading(level: 1, numbering: none, bookmarked: true)[#if num != "" [#num #h(0.3em)]#title]
+} else {
   currentchapter.update(if num == "" { title } else { num + " " + title })
   pagebreak(weak: true)
   v(2em)
@@ -58,7 +72,7 @@
   let head = if extra != none { kind + " " + num + " " + extra }
              else { kind + " " + num }
   block[
-    #strong[#head].#h(0.35em) #it
+    #strong[#head]. #it
   ]
 }
 #let thm(num, it) = _stmt("Теорема", num, it)
@@ -88,19 +102,39 @@
 
 // --- блоки правил / фігур ---------------------------------------------------
 // Лістинг вихідного коду (OCaml тощо): моноширинно, без вирівнювання.
-#let code(body) = block(
-  width: 100%, inset: 7pt, radius: 2pt, fill: luma(97),
-  stroke: (paint: luma(75), thickness: 0.4pt),
-  breakable: false,
-)[
-  #set text(font: ("DejaVu Sans Mono", "Menlo", "Courier New"), size: 9pt)
-  #set par(justify: false, first-line-indent: 0em, leading: 0.58em)
-  #body
-]
+// Рядки лістингу — або окремі `#raw(...)` без розривів, або з явним `\`.
+// Розрив додається лише між двома `#raw` підряд, тож явні розриви не дублюються.
+#let _lines(body) = {
+  let ch = if body.has("children") { body.children } else { (body,) }
+  let out = ()
+  let prev-raw = false
+  for c in ch {
+    if c == [ ] { continue }
+    if c.func() == raw {
+      if prev-raw { out.push(linebreak()) }
+      prev-raw = true
+    } else { prev-raw = false }
+    out.push(c)
+  }
+  out.join()
+}
+#let code(body) = context if target() == "html" {
+  html.elem("div", attrs: (style: "white-space: pre; overflow-x: auto; background: #f4f4f4; border: 1px solid #999; padding: .5em .7em; margin: 1em 0; font-family: 'DejaVu Sans Mono', Menlo, monospace; font-size: .85em; line-height: 1.35"), _lines(body))
+} else {
+  block(
+    width: 100%, inset: 7pt, radius: 2pt, fill: luma(97),
+    stroke: (paint: luma(75), thickness: 0.4pt),
+    breakable: false,
+  )[
+    #set text(font: ("DejaVu Sans Mono", "Menlo", "Courier New"), size: 9pt)
+    #set par(justify: false, first-line-indent: 0em, leading: 0.58em)
+    #_lines(body)
+  ]
+}
 
 // Дошка для правил виведення, боксів синтаксису й таблиць: текст усередині
 // зберігає розбиття на рядки (саме так воно надруковано в книзі).
-#let rules(body, scale: 0.94) = block(
+#let rules(body, scale: 0.94) = _hf(block(
   width: 100%, inset: 7pt, radius: 0pt,
   stroke: (paint: luma(60), thickness: 0.5pt),
 )[
@@ -108,35 +142,35 @@
   #set par(justify: false, first-line-indent: 0em, leading: 0.60em)
   #set block(spacing: 0.45em)
   #body
-]
+])
 // Правило виведення у два стовпці: посилки над рискою, висновок під нею.
 // Посилки й висновок — це ВМІСТ (content), тож і математика ($…$), і звичайний
 // текст («t1 — числове значення») передаються однаково.
-#let rule(premises, name, conclusion) = block(breakable: false)[
+#let rule(premises, name, conclusion) = _hf(block(breakable: false)[
   #grid(columns: 2, column-gutter: 1.2em, align: (center + horizon, right + horizon),
     premises, text(size: 8.5pt, fill: luma(70))[#name])
   #v(-0.35em)
   #line(length: 100%, stroke: 0.5pt)
   #v(-0.15em)
   #align(center)[#conclusion]
-]
-#let figure(caption, body) = block(width: 100%, breakable: false)[
+])
+#let figure(caption, body) = _hf(block(width: 100%, breakable: false)[
   #body
   #v(0.25em)
   #align(center)[#text(size: 9.5pt)[#caption]] 
-]
-#let tbl(caption, body) = block(width: 100%, breakable: false)[
+])
+#let tbl(caption, body) = _hf(block(width: 100%, breakable: false)[
   #body
   #v(0.25em)
   #align(center)[#text(size: 9.5pt)[#caption]]
-]
+])
 
 // Нумерована виключна формула: #eqn($...$, "3.1") — номер у правому полі.
-#let eqn(body, num) = block(width: 100%, breakable: false)[
+#let eqn(body, num) = _hf(block(width: 100%, breakable: false)[
   #place(right + horizon, text(size: 9.5pt)[(#num)])
   #align(center)[$#body$]
   #v(-0.35em)
-]
+])
 
 // Нумерований список із довільним стилем нумерації: #numbered("(i)", [...], [...])
 #let numbered(numbering, ..items) = enum(numbering: numbering, ..items.pos())
