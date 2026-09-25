@@ -76,12 +76,21 @@ def wrap_tables(fragment):
     return "".join(out)
 
 
+UNNUMBERED = {
+    "Передмова": "preface",
+    "Розв’язки до вибраних вправ": "appA",
+    "Список джерел": "refs",
+    "Покажчик": "subject-index",
+}
+
 def slug_for(heading, seen_toc, front_index):
     """Page file name: chapters by their number (ch01…), appendices by their
-    letter (appB), everything else (the preface) as `preface`."""
-    m = re.match(r"\s*([0-9]+|[A-Z])\s", text_of(heading) + " ")
+    letter (appB); the unnumbered parts (preface, appendix A, references,
+    index) by title."""
+    title = text_of(heading)
+    m = re.match(r"\s*([0-9]+|[A-Z])\s", title + " ")
     if not m:
-        return "preface"
+        return UNNUMBERED.get(title, f"page-{front_index}")
     label = m.group(1)
     return f"ch{int(label):02d}" if label.isdigit() else f"app{label}"
 
@@ -129,7 +138,8 @@ def main(src, out):
         if "<!--TOC-->" in chunk:  # the TOC sits at the tail of the last front-matter page
             chunk = chunk.replace("<!--TOC-->", "")
         front += not after_toc
-        slug = slug_for(h, after_toc, front)
+        slug = slug_for(h, after_toc, front + i)
+        assert all(slug != p[0] for p in pages), f"duplicate page name {slug}"
         pages.append([slug, h, chunk])
 
     # ids -> page file

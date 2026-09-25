@@ -31,8 +31,20 @@ def main():
         if len(have) < len(parts):
             todo.append(uid)
             continue
-        (BOOK / f"{uid}.typ").write_text(
-            "".join(f'#include "/out/{pid}/uk.typ"\n' for pid in have), encoding="utf-8")
+        # A unit split into parts repeats its `#chap(...)` heading at the top of
+        # every part; keep it only in the first, or the book shows the heading
+        # (and the HTML page) once per part.
+        lines = []
+        for i, pid in enumerate(have):
+            if i == 0:
+                lines.append(f'#include "/out/{pid}/uk.typ"\n')
+                continue
+            src = (ROOT / MAN[pid]["output"]).read_text(encoding="utf-8")
+            body = "".join(l for l in src.splitlines(keepends=True)
+                           if not l.startswith("#chap("))
+            (BOOK / f"{pid}.typ").write_text(body, encoding="utf-8")
+            lines.append(f'#include "/book/{pid}.typ"\n')
+        (BOOK / f"{uid}.typ").write_text("".join(lines), encoding="utf-8")
         done.append(uid)
 
     # `#set`/`#show` rules do not leak out of an imported module, so the page,
