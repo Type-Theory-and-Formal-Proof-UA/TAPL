@@ -141,7 +141,14 @@
   #set text(size: 10.5pt * scale)
   #set par(justify: false, first-line-indent: 0em, leading: 0.60em)
   #set block(spacing: 0.45em)
-  #body
+  // Consecutive #raw(...) calls are INLINE and flow together on one line, so a
+  // board written as one #raw per line (the book's own line breaks — see
+  // STYLE.md §"рисунки") collapses into a single wrapped paragraph. `#code`
+  // already re-breaks them through _lines(); `rules` did not, which is why
+  // ch13's rule boards and ch14's Figure 14-3 mixed their columns. Run the
+  // same helper here so every container that takes raw lines behaves alike,
+  // instead of each part patching itself with `#set raw(block: true)`.
+  #_lines(body)
 ])
 // Правило виведення у два стовпці: посилки над рискою, висновок під нею.
 // Посилки й висновок — це ВМІСТ (content), тож і математика ($…$), і звичайний
@@ -171,6 +178,28 @@
   #align(center)[$#body$]
   #v(-0.35em)
 ])
+
+// Ненумерована виключна формула: #disp($...$) — та сама геометрія, без номера.
+// Потрібна там, де джерело друкує формулу на виключку без номера (напр. рівняння
+// алгебри підтипів у додатку A): #eqn вимагає номер і без нього не компілюється.
+#let disp(body) = _hf(block(width: 100%, breakable: false)[
+  #align(center)[$#body$]
+  #v(-0.35em)
+])
+
+// Запис бібліографії: #bib[текст] — з висячим відступом, як в оригіналі.
+// Текст лишається англійською: STYLE.md §1 зберігає імена авторів, назви праць
+// і видання як в оригіналі, тож перекладати в бібліографії нічого.
+#let bib(it) = block(width: 100%, outset: (left: 1.2em), par(hanging-indent: 1.2em, it))
+
+// Запис покажчика: #idx(0, [термін, 123]) — рівень 0/1/2 задає відступ.
+// Покажчик у TAPL — це ключі, а не проза: STYLE.md §1 лишає надруковану форму
+// терміна (її шукають за номером сторінки й на неї посилаються), тому текст
+// лишається англійською, а рівень вкладеності береться з відступу оригіналу.
+#let idx(level, it) = {
+  let ind = level * 8pt
+  block(width: 100%, inset: (left: ind), par(hanging-indent: 8pt)[#it])
+}
 
 // Нумерований список із довільним стилем нумерації: #numbered("(i)", [...], [...])
 #let numbered(numbering, ..items) = enum(numbering: numbering, ..items.pos())
