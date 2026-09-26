@@ -118,18 +118,46 @@
   }
   out.join()
 }
-#let code(body) = context if target() == "html" {
-  html.elem("div", attrs: (style: "white-space: pre; overflow-x: auto; background: #f4f4f4; border: 1px solid #999; padding: .5em .7em; margin: 1em 0; font-family: 'DejaVu Sans Mono', Menlo, monospace; font-size: .85em; line-height: 1.35"), _lines(body))
-} else {
-  block(
-    width: 100%, inset: 7pt, radius: 2pt, fill: luma(97),
-    stroke: (paint: luma(75), thickness: 0.4pt),
-    breakable: false,
-  )[
-    #set text(font: ("DejaVu Sans Mono", "Menlo", "Courier New"), size: 9pt)
-    #set par(justify: false, first-line-indent: 0em, leading: 0.58em)
-    #_lines(body)
-  ]
+// Якщо в лістингу лише рядки `#raw(...)` (і розриви), він збирається в один
+// блоковий `raw` — його оформлює codly (PDF) або виводить як <pre> (HTML).
+#let _raw-lines(body) = {
+  let ch = if body.has("children") { body.children } else { (body,) }
+  let lines = ()
+  for c in ch {
+    if c == [ ] or c.func() == linebreak { continue }
+    if c.func() == raw { lines.push(c.text) } else { return none }
+  }
+  lines
+}
+// Підсвічування лише для впізнаваного OCaml; решта (лямбда-числення, виводи) — без.
+#let _lang(src) = {
+  let ml = src.find(regex("(?m)^\\s*(let rec|type \\w+|open |module |exception )")) != none
+  let pm = src.contains("match ") and src.contains(" with")
+  if ml or pm { "ocaml" } else { none }
+}
+#let code(body) = context {
+  let lines = _raw-lines(body)
+  let src = if lines == none { none } else { lines.join("\n") }
+  if target() == "html" {
+    html.elem("div", attrs: (style: "overflow-x: auto; background: #f4f4f4; border: 1px solid #999; padding: .5em .7em; margin: 1em 0; font-size: .85em; line-height: 1.35"),
+      if src != none { raw(src, block: true, lang: _lang(src)) } else { _lines(body) })
+  } else if src != none {
+    block(width: 100%, breakable: false)[
+      #set text(font: ("DejaVu Sans Mono", "Menlo", "Courier New"), size: 9pt)
+      #set par(justify: false, first-line-indent: 0em, leading: 0.58em)
+      #raw(src, block: true, lang: _lang(src))
+    ]
+  } else {
+    block(
+      width: 100%, inset: 7pt, radius: 2pt, fill: luma(96%),
+      stroke: (paint: luma(75), thickness: 0.4pt),
+      breakable: false,
+    )[
+      #set text(font: ("DejaVu Sans Mono", "Menlo", "Courier New"), size: 9pt)
+      #set par(justify: false, first-line-indent: 0em, leading: 0.58em)
+      #_lines(body)
+    ]
+  }
 }
 
 // Дошка для правил виведення, боксів синтаксису й таблиць: текст усередині

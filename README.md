@@ -34,6 +34,12 @@ Requires the [Typst CLI](https://github.com/typst/typst) 0.15 and Python 3.
 python3 scripts/build_site.py   # -> site/index.html, site/ch01.html, …, site/tapl-uk.pdf
 ```
 
+Code listings in the PDF are typeset with [codly](https://typst.app/universe/package/codly)
+(`@preview/codly:1.3.0`, fetched by Typst on first build, so the first build needs
+network access); OCaml listings are syntax-highlighted. The HTML edition uses a
+plain highlighted `<pre>` block instead, because codly's grids cannot be exported
+to HTML.
+
 The script includes every chapter whose parts all exist, builds the PDF, builds
 the HTML edition (`typst compile --features html`, still experimental in Typst;
 math is emitted as MathML, block layouts such as inference rules and tables as

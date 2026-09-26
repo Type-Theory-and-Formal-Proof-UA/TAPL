@@ -51,20 +51,30 @@ def main():
     # text and paragraph setup from the preamble is applied here, at the top level.
     pre = (ROOT / "templates" / "preamble.typ").read_text(encoding="utf-8")
     setup = pre[pre.index("#set page("):pre.index("// --- змінні стану")]
-    head = ('#set document(title: "Типи та мови програмування", '
+    base = ('#set document(title: "Типи та мови програмування", '
             'author: "Бенджамін К. Пірс")\n'
-            '#let currentchapter = state("chapter", "")\n' + setup + "\n"
-            # the contents page of the HTML edition (the PDF has no outlined headings)
-            '#context if target() == "html" { outline(title: none, depth: 1) }\n')
+            '#let currentchapter = state("chapter", "")\n')
+    # PDF: code listings are styled by codly. Its show rule builds grids, which
+    # Typst's HTML export cannot lay out, so the HTML edition is a separate entry
+    # file without it (the `code` helper in the preamble emits a plain <pre> there).
+    codly = ('#import "@preview/codly:1.3.0": codly, codly-init\n'
+             '#show: codly-init.with()\n'
+             '#codly(number-format: none, display-icon: false, display-name: false,\n'
+             '  zebra-fill: none, fill: luma(96%), stroke: 0.4pt + luma(30%), radius: 2pt,\n'
+             '  inset: 0.45em, lang-inset: 0pt)\n')
+    includes = "".join(f'#include "/book/{uid}.typ"\n' for uid in done)
     (BOOK / "tapl-uk.typ").write_text(
-        head + "".join(f'#include "/book/{uid}.typ"\n' for uid in done), encoding="utf-8")
+        base + codly + setup + "\n" + includes, encoding="utf-8")
+    (BOOK / "tapl-uk-html.typ").write_text(
+        base + setup + "\n" + '#outline(title: none, depth: 1)\n' + includes,
+        encoding="utf-8")
 
     common = ["--root", ".", "--font-path", "fonts", "--ignore-system-fonts"]
     steps = [
         ["typst", "compile", *common, "book/tapl-uk.typ", "site/tapl-uk.pdf"],
         # HTML export is still experimental in Typst, hence the feature flag.
         ["typst", "compile", "--features", "html", "--format", "html", *common,
-         "book/tapl-uk.typ", "build/book.html"],
+         "book/tapl-uk-html.typ", "build/book.html"],
         # Typst emits one long page; cut it into one page per chapter.
         [sys.executable, "scripts/split_html.py", "build/book.html", "site"],
     ]
